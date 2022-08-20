@@ -1,0 +1,17 @@
+name: Create fake secrets
+author: Daniel Condomitti
+description: Creates fake secret files for any secrets found in Home Assistant config
+runs:
+  using: composite
+  steps:
+    - name: Create secrets file
+      shell: bash
+      run: touch ${GITHUB_WORKSPACE}/secrets.yaml
+    - name: Create non-URL secrets
+      shell: bash
+      run: |2
+        grep -r '!secret ' /${GITHUB_WORKSPACE} | grep -v create_fake_secrets/action.yml | grep -v _url | awk '{ print $4 ": LOL" }' | uniq >> ${GITHUB_WORKSPACE}/secrets.yaml
+    - name: Add URL secrets
+      shell: bash
+      run: |2
+        grep -r '!secret ' /${GITHUB_WORKSPACE} | grep -v create_fake_secrets/action.yml | grep _url | awk '{ print $4 ": https://example.com/lol.json" }' | uniq >> ${GITHUB_WORKSPACE}/secrets.yaml

@@ -1,0 +1,9 @@
+name: Validate Home Assistant configuration
+author: Daniel Condomitti
+description: Just runs the built-in validator for Home Assistant configuration
+runs:
+  using: composite
+  steps:
+    - name: Validate Home Assistant configuration
+      shell: bash
+      run: hass --script check_config -c ${GITHUB_WORKSPACE}

@@ -1,0 +1,24 @@
+name: Setup Custom Component
+author: Daniel Condomitti
+description: Clones a Home Assistant custom component and symlinks it
+inputs:
+  name:
+    description: Name of the custom component (if it differs from the repository name)
+  repository:
+    description: The HTTPS URL of the custom component
+    required: true
+  branch:
+    description: The Git branch to check out
+    required: true
+    default: main
+runs:
+  using: composite
+  steps:
+    - name: Set up component
+      run: $GITHUB_ACTION_PATH/setup.sh
+      shell: bash
+      env:
+        INPUT_REPOSITORY: ${{ inputs.repository }}
+        INPUT_NAME: ${{ inputs.name }}
+        INPUT_BRANCH: ${{ inputs.branch }}
+
